@@ -1,0 +1,83 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Application</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f9fafb;
+        }
+        #loading {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid #2563eb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">
+        <div class="spinner"></div>
+        <p>Loading loan application...</p>
+    </div>
+
+    <!-- Pega Embed Script -->
+    <script src="https://prod-cdn.constellation.pega.io/25.1.2-394/react/prod/pega-embed.js"></script>
+    
+    <!-- Pega Embed Element -->
+    <pega-embed 
+        id="theEmbed" 
+        action="openPage" 
+        pageID="LoanEligibilityRequest" 
+        pageClass="ABC-Personal-UIPages" 
+        themeID="pyWebSelfService" 
+        casePage="assignment" 
+        appAlias="personal-loan-application" 
+        pegaServerUrl="https://lab-13895-us-east-1.external.pegalabs.io/prweb/" 
+        autoReauth="true" 
+        authService="pega" 
+        deferLoad="true" 
+        clientId="145183013639164529009" 
+        style="width:100%">
+    </pega-embed>
+
+    <script>
+        // Wait for embed to be ready
+        const el = document.getElementById('theEmbed');
+        
+        el.addEventListener('embedReady', (e) => {
+            console.log('Embed is ready', e.detail);
+            document.getElementById('loading').style.display = 'none';
+        });
+        
+        el.addEventListener('assignmentOpened', (e) => {
+            console.log('Assignment opened', e.detail);
+        });
+        
+        // Initialize after a short delay
+        setTimeout(() => {
+            if (el.load) {
+                el.load();
+            }
+        }, 500);
+    </script>
+</body>
+</html>
